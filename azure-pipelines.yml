@@ -1,0 +1,26 @@
+trigger:
+  branches:
+    include:
+      - main
+      - fix/dockerfile-azure
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  dockerRegistryServiceConnection: 'cicdtest-acr'
+  imageRepository: 'laravel-app'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+steps:
+  - task: Docker@2
+    displayName: Build and push image to ACR
+    inputs:
+      command: buildAndPush
+      repository: $(imageRepository)
+      dockerfile: $(dockerfilePath)
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
