@@ -1,0 +1,21 @@
+name: Sync to Azure Repos
+
+on:
+  push:
+    branches: ['**']
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Azure Repos
+        env:
+          AZURE_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+        run: |
+          git remote add azure https://pat:${AZURE_PAT}@dev.azure.com/Amar-Laravel/Laravel/_git/Laravel
+          git push azure HEAD:refs/heads/${GITHUB_REF_NAME} --force
