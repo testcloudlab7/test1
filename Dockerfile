@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 RUN apt-get update && apt-get install -y zip unzip git libzip-dev \
     && docker-php-ext-install zip \
@@ -17,4 +17,4 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 80 
+EXPOSE 80
